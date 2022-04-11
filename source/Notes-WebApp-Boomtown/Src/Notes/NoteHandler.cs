@@ -1,6 +1,4 @@
-﻿
-
-using Notes_WebApp_Boomtown.Models;
+﻿using Notes_WebApp_Boomtown.Models;
 using Notes_WebApp_Boomtown.Src.Utilities;
 
 namespace Notes_WebApp_Boomtown.Src.Notes
