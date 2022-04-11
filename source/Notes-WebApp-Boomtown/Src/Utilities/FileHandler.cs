@@ -1,61 +1,58 @@
 ﻿using Newtonsoft.Json;
-using Notes_WebApp_Boomtown.Models;
 
 namespace Notes_WebApp_Boomtown.Src.Utilities
 {
     public class FileHandler
     {
         /// <summary>
-        /// 
+        /// Uses generics to load Json Files into given objects
         /// </summary>
         /// <param name="filePath">Path to File on Disk</param>
         /// <exception cref="FileNotFoundException"></exception>
         /// <returns></returns>
-        public static dynamic LoadJsonFile(string filePath)
+        public static T? LoadJsonFile<T>(string filePath)
         {
 
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                string json = reader.ReadToEnd();
-                dynamic jsonDataList = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                return jsonDataList;
-            }
+            string json = GetFileContent(filePath);
+            dynamic jsonDataList = JsonConvert.DeserializeObject<T>(json);
+            return jsonDataList;
+            
         }
 
-        public static Dictionary<string, NoteMetadata> LoadNoteJson(string filePath)
-        {
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                string json = reader.ReadToEnd();
-                Dictionary<string, NoteMetadata> jsonDataList = JsonConvert.DeserializeObject<Dictionary<string, NoteMetadata>>(json);
-                return jsonDataList;
-            }
-        }
-
-
+        /// <summary>
+        /// Will Serialize an Object into a Json String
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static string GetJsonFromObject(dynamic item)
         {
             return JsonConvert.SerializeObject(item);
         }
 
+        /// <summary>
+        /// Helper Function to Get Contents From Files
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <returns>File Content</returns>
         public static string GetFileContent(string filePath)
         {
-            string fileText = System.IO.File.ReadAllText(filePath);
-            return fileText;
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string content = reader.ReadToEnd();
+                return content;
+            }
         }
 
-        public static Boolean WriteToFile (string filePath, string content)
+        /// <summary>
+        /// Helper Function for saving to File
+        /// </summary>
+        /// <exception cref="IOException"></exception>
+        /// <param name="filePath"></param>
+        /// <param name="content"></param>
+        public static void WriteToFile (string filePath, string content)
         {
-            Boolean success;
-            try
-            {
-                File.WriteAllText(filePath, content);
-                success = true;
-            }catch(Exception ex)
-            {
-                success = false;
-            }
-            return true;
+            File.WriteAllText(filePath, content);
         }
     }
 }

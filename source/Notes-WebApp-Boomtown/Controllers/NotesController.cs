@@ -21,25 +21,25 @@ namespace Notes_WebApp_Boomtown.Controllers
         public IEnumerable<NoteMetadata> GetAllNotes()
         {
             _logger.LogDebug("GetAllNotes()");
-            return handler.GetNoteMetadataList().Values.ToArray();
+            return handler.GetNoteMetadataDict().Values.ToArray();
         }
 
         [HttpGet("{id}")]
         public NoteMetadata GetNote(string id)
         {
-            return handler.GetEntryComplete(id);
+            return handler.GetEntry(id);
         }
 
         [HttpPatch]
         public int UpdateNote([FromBody] NoteMetadata note)
         {
-            return handler.UpdateEntryComplete(note);
+            return handler.UpdateEntry(note);
         }
 
         [HttpPost]
         public int CreateNote([FromBody] NoteMetadata note)
         {
-            return handler.CreateEntryComplete(note);
+            return handler.CreateEntry(note);
         }
 
         [HttpDelete("{id}")]

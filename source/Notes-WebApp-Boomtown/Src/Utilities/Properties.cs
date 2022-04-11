@@ -19,7 +19,7 @@
             if(instance == null)
             {
                 instance = new Properties();
-                dynamic properties = FileHandler.LoadJsonFile("NotesAppProperties.json")[0];
+                Dictionary<string, string> properties = FileHandler.LoadJsonFile<Dictionary<string, string>>("NotesAppProperties.json");
                 foreach (string prop in PROP_LIST)
                 {
                     string propValue = properties[prop];
