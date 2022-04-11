@@ -7,13 +7,13 @@ namespace Notes_WebApp_Boomtown.Src.Notes
 {
     public sealed class NoteHandler
     {
-        private static NoteHandler instance = null;
-        private static string manifestPath;
-        private Dictionary<string,NoteMetadata> notesMetadataList; 
+        private static NoteHandler? instance;
+        private static string? manifestPath;
+        private Dictionary<string,NoteMetadata> notesMetadataDict; 
 
         private NoteHandler()
         {
-            notesMetadataList = new Dictionary<string, NoteMetadata>();
+            notesMetadataDict = new Dictionary<string, NoteMetadata>();
             manifestPath = "";
         }
 
@@ -29,63 +29,90 @@ namespace Notes_WebApp_Boomtown.Src.Notes
 
                 //Instaniating Properties, getting Note Metadata List 
                 manifestPath = Properties.GetProp(Properties.NOTES_DIR);
-                instance.notesMetadataList = instance.LoadNoteMetadataList(manifestPath);
+                instance.notesMetadataDict = instance.LoadNoteMetadataDict(manifestPath);
             }
             return instance;
         }
 
-        private Dictionary<string,NoteMetadata> LoadNoteMetadataList(string indexPathOnDisk)
+        /// <summary>
+        /// Helper Function for Loading NoteMetadataDict
+        /// </summary>
+        /// <param name="indexPathOnDisk"></param>
+        /// <returns></returns>
+        private Dictionary<string,NoteMetadata> LoadNoteMetadataDict(string indexPathOnDisk)
         {
-            Dictionary<string,NoteMetadata> returnList;
+            Dictionary<string,NoteMetadata> returnDict;
             try
             {
-                returnList = FileHandler.LoadNoteJson(indexPathOnDisk);
+                returnDict = FileHandler.LoadNoteJson(indexPathOnDisk);
             }catch(Exception ex)
             {
-                //Log Error, then return new List
-                returnList = new Dictionary<string, NoteMetadata>();
+                returnDict = new Dictionary<string, NoteMetadata>();
             }
-            return returnList;
+            return returnDict;
         }
 
-        private bool SaveMetadataList(Dictionary<string, NoteMetadata> listToSave)
+        /// <summary>
+        /// Saves NoteMetadataDict to File 
+        /// NOTE: This is called anytime there is a modification to the MetadataDict Object
+        /// </summary>
+        /// <param name="dictToSave"></param>
+        /// <returns>returns True if Sucessful</returns>
+        private bool SaveMetadataDict(Dictionary<string, NoteMetadata> dictToSave)
         {
-            string json = FileHandler.GetJsonFromObject(listToSave);
+            string json = FileHandler.GetJsonFromObject(dictToSave);
             bool success = FileHandler.WriteToFile(manifestPath, json);
 
             return success;
         }
 
+        /// <summary>
+        /// Returns a copy of the noteMetadataList 
+        /// NOTE: A copy to returned to prevent external actors from modifying the collection
+        /// </summary>
+        /// <returns>copy of MetadataList</returns>
         public Dictionary<string, NoteMetadata> GetNoteMetadataList()
         {
             //Return a copy of the list, prevents modification externally 
-            return new Dictionary<string, NoteMetadata>(this.notesMetadataList);
+            return new Dictionary<string, NoteMetadata>(this.notesMetadataDict);
         }
 
-
+        /// <summary>
+        /// Returns a complete NoteMetadata Object for a given ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Complete NoteMetadata Object </returns>
         public NoteMetadata GetEntryComplete(string id)
         {
             NoteMetadata completeNote;
             if (this.NoteExists(id)) {
                 //Need to load file from disk here, and return metadata
-                completeNote = this.notesMetadataList[id];
+                completeNote = this.notesMetadataDict[id];
 
             }
             else
             {
-                completeNote = new NoteMetadata();
+                throw new KeyNotFoundException("Unable to find Key: " + id);
             }
             return completeNote;
         }
 
+        /// <summary>
+        /// Performs update of passed NoteMetadata object
+        /// Updates the Last Modified time
+        /// Updates the notesMetadataList 
+        /// Then Saves NotesMetadataList
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns>StatusCode 200 for Success, 400 For Failure</returns>
         public int UpdateEntryComplete(NoteMetadata note)
         {
             int returnCode;
             if(this.NoteExists(note))
             {
                 note.LastModified = DateTime.Now.ToString();
-                this.notesMetadataList[note.NoteID] = note;
-                returnCode = this.SaveMetadataList(this.notesMetadataList) ? StatusCodes.Status200OK: StatusCodes.Status400BadRequest;
+                this.notesMetadataDict[note.NoteID] = note;
+                returnCode = this.SaveMetadataDict(this.notesMetadataDict) ? StatusCodes.Status200OK: StatusCodes.Status400BadRequest;
             }
             else
             {
@@ -93,22 +120,34 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             }
             return returnCode;
         }
-        
+
+        /// <summary>
+        /// Creates new Entry from give NoteMetadata Object 
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns>StatusCode 200 for Success, 400 For Failure</returns>
         public int CreateEntryComplete(NoteMetadata note)
         {
             string noteID = this.GetNewID();
             note.NoteID = noteID;
             note.CreationDate = DateTime.Now.ToString();
-            this.notesMetadataList.Add(noteID,note);
+            this.notesMetadataDict.Add(noteID,note);
+
+            //Call UpdateEntryComplete to handle last bit of Entry Save
             return this.UpdateEntryComplete(note);
         }
 
+        /// <summary>
+        /// Performs complete Delete of Note Entry 
+        /// </summary>
+        /// <param name="noteID"></param>
+        /// <returns>StatusCode 200 for Success, 400 For Failur</returns>
         public int DeleteEntry(string noteID)
         {
             int returnCode;
             if (NoteExists(noteID)){
-                this.notesMetadataList.Remove(noteID);
-                returnCode = this.SaveMetadataList(this.notesMetadataList) ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest;
+                this.notesMetadataDict.Remove(noteID);
+                returnCode = this.SaveMetadataDict(this.notesMetadataDict) ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest;
             }
             else
             {
@@ -117,16 +156,31 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             return returnCode;
         }
 
-        private Boolean NoteExists(NoteMetadata note)
+        /// <summary>
+        /// Helper function for verifying note existence from note Object 
+        /// </summary>
+        /// <param name="note"></param>
+        /// <returns></returns>
+        private bool NoteExists(NoteMetadata note)
         {
-            return this.notesMetadataList.ContainsKey(note.NoteID);
+            return this.NoteExists(note.NoteID);
         }
 
-        private Boolean NoteExists(string id)
+        /// <summary>
+        /// Helper function for verifying note existence from ID number
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private bool NoteExists(string id)
         {
-            return this.notesMetadataList.ContainsKey(id);
+            return this.notesMetadataDict.ContainsKey(id);
         }
 
+        /// <summary>
+        /// Helper function for generating GUID.
+        /// NOTE: This function should live in a common utility file
+        /// </summary>
+        /// <returns></returns>
         private string GetNewID()
         {
             return Guid.NewGuid().ToString();
