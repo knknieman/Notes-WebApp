@@ -1,26 +1,98 @@
 import React, { Component } from 'react';
 
-export class Home extends Component {
-  static displayName = Home.name;
+// Import React Table
+import ReactTable from "react-table-6";
+import "react-table-6/react-table.css";
 
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+import { Link } from 'react-router-dom'
+
+export class Home extends Component {
+    static displayName = Home.name;
+
+    constructor(props) {
+        super(props);
+        this.state = { noteMetadata: [], loading: true };
+    }
+
+    componentDidMount() {
+        this.populateNotesData();
+    }
+
+
+    state = { selected: null }
+    renderNotesTable(noteMetadata) {
+        
+        return (
+            <ReactTable ref="table"
+                data={noteMetadata}
+                columns={[
+                    {
+                        Header: "Test",
+                        columns: [
+                            {
+                                Header: "ID",
+                                accessor: "noteID",
+                                style: { textAlign: "right" }
+                            },
+                            {
+                                Header: "Note Title",
+                                accessor: "noteName"
+                            },
+                            {
+                                Header: "Creation Date",
+                                accessor: "creationDate"
+                            },
+                            {
+                                Header: "Last Modified",
+                                accessor: "lastModified"
+                            },
+                            {
+                                Header: "Path on Disk",
+                                accessor: "pathOnDisk"
+                            }
+                        ]
+                    }
+                ]}
+                getTrProps={(state, rowInfo) => {
+                    if (rowInfo && rowInfo.row) {
+                        console.log(rowInfo);
+                        return {                          
+                            onClick: (e) => {
+                                this.props.history.push("/note/" + rowInfo.row.noteID);
+                            }
+                        }
+                    } else {
+                        return {}
+                    }
+                }
+            }
+            
+            />
+        );
+
+    
+    }
+
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderNotesTable(this.state.noteMetadata);
+            
+
+        return (
+            <div>
+                <h1 id="tabelLabel" >Notes</h1>
+                <p>Please Make a Selection to View Note</p>
+                <Link className="btn btn-primary " role="button" to={{ pathname: "/note/create" }}>Create New Note</Link>
+                {contents}
+              
+            </div>
+        );
+    }
+
+    async populateNotesData() {
+        const response = await fetch('notes');
+        const data = await response.json();
+        this.setState({ noteMetadata: data, loading: false });
+    }
 }

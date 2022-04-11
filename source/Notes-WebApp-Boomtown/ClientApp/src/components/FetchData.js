@@ -5,31 +5,33 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { noteMetadata: [], loading: true };
   }
 
   componentDidMount() {
     this.populateWeatherData();
   }
 
-  static renderForecastsTable(forecasts) {
+    static renderNotesTable(noteMetadata) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            {/*<th>Note ID</th>*/}
+            <th>Note Title</th>
+            <th>Creation Date</th>
+            <th>Last Modified</th>
+            <th>Path on Disk</th>
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
+          {noteMetadata.map(noteMetadata =>
+              <tr key={noteMetadata.noteID}>
+                  {/* <td>{noteMetadata.noteID}</td>*/}
+                  <td>{noteMetadata.noteName}</td>
+                  <td>{noteMetadata.creationDate}</td>
+                  <td>{noteMetadata.lastModified}</td>
+                  <td>{noteMetadata.pathOnDisk}</td>
             </tr>
           )}
         </tbody>
@@ -40,12 +42,12 @@ export class FetchData extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+        : FetchData.renderNotesTable(this.state.noteMetadata);
 
     return (
       <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+        <h1 id="tabelLabel" >Notes</h1>
+        <p>Please Make a Selection to View Note</p>
         {contents}
       </div>
     );
@@ -53,7 +55,7 @@ export class FetchData extends Component {
 
   async populateWeatherData() {
     const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+      const data = await response.json();
+    this.setState({ noteMetadata: data, loading: false });
   }
 }
