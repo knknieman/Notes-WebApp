@@ -49,8 +49,6 @@ namespace Notes_WebApp_Boomtown.Src.Notes
                 //Return new Dictionary on instance of fileNotFoundException
                 return new Dictionary<string, NoteMetadata>();
             }
-
-
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             }
 
             return success;
-            }
+        }
 
         /// <summary>
         /// Returns a copy of the noteMetadataDict
@@ -98,7 +96,6 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             if (this.NoteExists(id)) {
                 //Need to load file from disk here, and return metadata
                 completeNote = this.notesMetadataDict[id];
-
             }
             else
             {
@@ -143,7 +140,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             note.CreationDate = DateTime.Now.ToString();
             this.notesMetadataDict.Add(noteID,note);
 
-            //Call UpdateEntryComplete to handle last bit of Entry Save
+            //Call UpdateEntry to handle last bit of Entry Save
             return this.UpdateEntry(note);
         }
 
@@ -188,7 +185,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
 
         /// <summary>
         /// Helper function for generating GUID.
-        /// NOTE: This function should live in a common utility file
+        /// NOTE: This function should probably live in a common utility file
         /// </summary>
         /// <returns></returns>
         private string GetNewID()
