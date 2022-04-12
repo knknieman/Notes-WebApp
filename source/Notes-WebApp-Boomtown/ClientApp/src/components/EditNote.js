@@ -31,7 +31,7 @@ export class EditNote extends Component {
         evt.preventDefault();
         this.apiCall = "";
         if (this.state.mode === "Edit") {
-            this.apiCall = "PATCH";
+            this.apiCall = "PUT";
         } else if (this.state.mode === "Create") {
             this.apiCall = "POST"
         }

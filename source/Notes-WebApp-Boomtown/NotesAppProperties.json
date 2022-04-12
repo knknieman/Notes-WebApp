@@ -1,4 +1,5 @@
 {
-  "NOTES_DIR": "Data\\Notes\\index.json"
+  "NOTES_DIR": "Data\\Notes\\index.json",
+  "DATA_SOURCE_TYPE":  "JSON"
 }
 

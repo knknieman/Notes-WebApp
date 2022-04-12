@@ -10,7 +10,7 @@ namespace Notes_WebApp_Boomtown.Controllers
     {
 
         private readonly ILogger<NotesController> _logger;
-        NoteHandler handler = NoteHandler.getInstance();
+        NoteHandler handler = NoteHandler.GetInstance();
         public NotesController(ILogger<NotesController> logger)
         {
             _logger = logger;
@@ -20,8 +20,7 @@ namespace Notes_WebApp_Boomtown.Controllers
         [HttpGet]
         public IEnumerable<NoteMetadata> GetAllNotes()
         {
-            _logger.LogDebug("GetAllNotes()");
-            return handler.GetNoteMetadataDict().Values.ToArray();
+            return handler.GetNotes();
         }
 
         [HttpGet("{id}")]
@@ -30,7 +29,7 @@ namespace Notes_WebApp_Boomtown.Controllers
             return handler.GetEntry(id);
         }
 
-        [HttpPatch]
+        [HttpPut]
         public int UpdateNote([FromBody] NoteMetadata note)
         {
             return handler.UpdateEntry(note);

@@ -6,7 +6,8 @@
         private Dictionary<string, string> propMap;
 
         public static readonly string NOTES_DIR = "NOTES_DIR";
-        public static readonly List<string> PROP_LIST = new List<string> (){ NOTES_DIR };
+        public static readonly string DATA_SOURCE_TYPE = "DATA_SOURCE_TYPE";
+        public static readonly List<string> PROP_LIST = new List<string> (){ NOTES_DIR, DATA_SOURCE_TYPE };
 
         private Properties()
         {
