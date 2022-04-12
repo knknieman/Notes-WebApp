@@ -13,7 +13,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         {
             notesMetadataDict = new Dictionary<string, NoteMetadata>();
             accessLock = new Object();
-            indexFile = Properties.GetProp(Properties.NOTES_DIR);
+            indexFile = Properties.GetProp(Properties.NOTES_INDEX_FILE);
             this.Load();
         }
 

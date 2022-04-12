@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:44417",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "C:\\Users\\knkni\\Documents\\Projects\\Notes_WebApp_Boomtown\\source\\Notes-WebApp-Boomtown\\ClientApp\\",
+"MaxTimeoutInSeconds": "120"
+}
+}
