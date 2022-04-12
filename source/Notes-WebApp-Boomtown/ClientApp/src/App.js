@@ -17,6 +17,7 @@ export default class App extends Component {
                   <Route exact path='/' component={Home} />
                   <Route exact path='/note/create' component={CreateView} />
                   <Route path='/note/:id' component={NoteView} />
+                  <Route path='/:id' component={NoteView} />
             </Switch>
          </Layout>
     );
