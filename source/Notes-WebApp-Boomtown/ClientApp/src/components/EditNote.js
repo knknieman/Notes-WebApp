@@ -43,10 +43,11 @@ export class EditNote extends Component {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson == 200) {
-
+                if (responseJson === 200) {
+                    //Redirect home if successful
                     window.location = "/";
                 } else {
+                    //Alert User Submit Failed
                     window.alert("Submit Failed with ReturnCode: " + responseJson);
                     window.location.reload(false);
                 }
@@ -72,13 +73,13 @@ export class EditNote extends Component {
 
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    console.log(responseJson);
 
-                    if (responseJson !== 200) {
+                    if (responseJson === 200) {
+                        window.location = "/";
+                    } else {
                         window.alert("Submit Failed with ReturnCode: " + responseJson);
+                        window.location = "/";
                     }
-                    window.location = "/";
-
                 });
         }
     }
@@ -93,8 +94,8 @@ export class EditNote extends Component {
             )
         } else if (this.state.mode === 'Create') {
             return (
-                <div class='row'>
-                    <button type='submit' class='btn btn-default'>Save</button>
+                <div class='col-xs-3'>
+                    <button type='submit' class='btn btn-primary m-1'>Save</button>
                 </div>
             )
         }

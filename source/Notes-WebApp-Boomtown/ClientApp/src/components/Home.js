@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
-// Import React Table
 import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
-
 import { Link } from 'react-router-dom'
 
 export class Home extends Component {
@@ -45,10 +43,6 @@ export class Home extends Component {
                             {
                                 Header: "Last Modified",
                                 accessor: "lastModified"
-                            },
-                            {
-                                Header: "Path on Disk",
-                                accessor: "pathOnDisk"
                             }
                         ]
                     }
@@ -81,9 +75,12 @@ export class Home extends Component {
 
         return (
             <div>
-                <h1 id="tabelLabel" >Notes</h1>
-                <p>Please Make a Selection to View Note</p>
-                <Link className="btn btn-primary " role="button" to={{ pathname: "/note/create" }}>Create New Note</Link>
+                <div class='row'>
+                    <div class="col-md-12 bg-light text-right" >
+                        <h5 id="tabelLabel" style={{ "float": 'left' }} >Please Make a Selection to View Note</h5>
+                        <Link className="btn btn-primary m-1" role="button" style={{ "float": 'right' }} to={{ pathname: "/note/create" }}>Create Note</Link>
+                    </div>
+                </div>
                 {contents}
               
             </div>
