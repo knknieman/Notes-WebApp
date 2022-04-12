@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Notes-WebApp-Boomtown\Notes-WebApp-Boomtown.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestData\" />
-  </ItemGroup>
-
 </Project>
