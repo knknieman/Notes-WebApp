@@ -9,34 +9,28 @@ namespace Notes_WebApp_Boomtown.Controllers
     public class NotesController : ControllerBase
     {
 
-        private readonly ILogger<NotesController> _logger;
         NoteHandler handler = NoteHandler.GetInstance();
-        public NotesController(ILogger<NotesController> logger)
-        {
-            _logger = logger;
-        }
-
 
         [HttpGet]
-        public IEnumerable<NoteMetadata> GetAllNotes()
+        public IEnumerable<NoteModel> GetAllNotes()
         {
             return handler.GetNotes();
         }
 
         [HttpGet("{id}")]
-        public NoteMetadata GetNote(string id)
+        public NoteModel GetNote(string id)
         {
             return handler.GetEntry(id);
         }
 
         [HttpPut]
-        public int UpdateNote([FromBody] NoteMetadata note)
+        public int UpdateNote([FromBody] NoteModel note)
         {
             return handler.UpdateEntry(note);
         }
 
         [HttpPost]
-        public int CreateNote([FromBody] NoteMetadata note)
+        public int CreateNote([FromBody] NoteModel note)
         {
             return handler.CreateEntry(note);
         }

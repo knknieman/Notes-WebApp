@@ -31,7 +31,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// Returns a the list of NoteMetadata Objects 
         /// </summary>
         /// <returns>copy of NoteMetadataDict</returns>
-        public List<NoteMetadata> GetNotes()
+        public List<NoteModel> GetNotes()
         {
             //Return a copy of the list, prevents modification externally 
             return this.noteContainer.ToList();
@@ -43,7 +43,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// <param name="id"></param>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <returns>Complete NoteMetadata Object </returns>
-        public NoteMetadata GetEntry(string id)
+        public NoteModel GetEntry(string id)
         {
             return this.noteContainer.Get(id);
         }
@@ -53,7 +53,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// </summary>
         /// <param name="note"></param>
         /// <returns>Http StatusCode</returns>
-        public int UpdateEntry(NoteMetadata note)
+        public int UpdateEntry(NoteModel note)
         {
             int returnCode;
             try
@@ -77,7 +77,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// </summary>
         /// <param name="note"></param>
         /// <returns>Http StatusCode</returns>
-        public int CreateEntry(NoteMetadata note)
+        public int CreateEntry(NoteModel note)
         {
             int returnCode;
             try

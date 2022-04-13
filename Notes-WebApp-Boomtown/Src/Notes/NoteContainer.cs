@@ -17,23 +17,23 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         public abstract void Load();
 
         /// <summary>
-        /// 
+        /// Performs Get
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public abstract NoteMetadata Get(string id);
+        public abstract NoteModel Get(string id);
 
         /// <summary>
         /// Performs Create 
         /// </summary>
         /// <exception cref="IOException"></exception>
-        public abstract void Create(NoteMetadata note);
+        public abstract void Create(NoteModel note);
 
         /// <summary>
         /// Performs Update 
         /// </summary>
         /// <exception cref="IOException"></exception>
-        public abstract void Update(NoteMetadata note);
+        public abstract void Update(NoteModel note);
 
         /// <summary>
         /// Performs Save
@@ -45,6 +45,6 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// Returns All NotesMetadata as a list 
         /// </summary>
         /// <returns></returns>
-        public abstract List<NoteMetadata> ToList();
+        public abstract List<NoteModel> ToList();
     }
 }

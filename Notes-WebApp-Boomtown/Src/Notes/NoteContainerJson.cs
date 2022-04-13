@@ -6,14 +6,14 @@ namespace Notes_WebApp_Boomtown.Src.Notes
     public class NoteContainerJson : NoteContainer
     {
         private string indexFile;
-        private Dictionary<string, NoteMetadata> notesMetadataDict;
+        private Dictionary<string, NoteModel> notesMetadataDict;
         private Object accessLock;
 
         public NoteContainerJson()
         {
-            notesMetadataDict = new Dictionary<string, NoteMetadata>();
-            accessLock = new Object();
+            notesMetadataDict = new Dictionary<string, NoteModel>();
             indexFile = Properties.GetProp(Properties.NOTES_INDEX_FILE);
+            accessLock = new Object();
             this.Load();
         }
 
@@ -23,12 +23,12 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             {
                 try
                 {
-                    this.notesMetadataDict = FileHandler.LoadJsonFile<Dictionary<string, NoteMetadata>>(this.indexFile);
+                    this.notesMetadataDict = FileHandler.LoadJsonFile<Dictionary<string, NoteModel>>(this.indexFile);
                 }
                 catch (IOException ex)
                 {
                     //Return new Dictionary on instance of fileNotFoundException
-                    this.notesMetadataDict = new Dictionary<string, NoteMetadata>();
+                    this.notesMetadataDict = new Dictionary<string, NoteModel>();
                 }
             }
         }
@@ -42,11 +42,10 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             }
         }
 
-        public override NoteMetadata Get(string id)
+        public override NoteModel Get(string id)
         {
             if (this.NoteExists(id))
             {
-                //Need to load file from disk here, and return metadata
                 return this.notesMetadataDict[id];
             }
             else
@@ -55,7 +54,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             }
         }
 
-        public override void Create(NoteMetadata note)
+        public override void Create(NoteModel note)
         {
             string noteID = this.GetNewID();
             note.NoteID = noteID;
@@ -66,7 +65,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             this.Update(note);
         }
 
-        public override void Update(NoteMetadata note)
+        public override void Update(NoteModel note)
         {
             if (this.NoteExists(note))
             {
@@ -94,9 +93,9 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             }
         }
 
-        public override List<NoteMetadata> ToList()
+        public override List<NoteModel> ToList()
         {
-            return new List<NoteMetadata> (this.notesMetadataDict.Values);
+            return new List<NoteModel> (this.notesMetadataDict.Values);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Notes_WebApp_Boomtown.Src.Notes
         /// </summary>
         /// <param name="note"></param>
         /// <returns></returns>
-        private bool NoteExists(NoteMetadata note)
+        private bool NoteExists(NoteModel note)
         {
             return this.NoteExists(note.NoteID);
         }
@@ -119,7 +118,10 @@ namespace Notes_WebApp_Boomtown.Src.Notes
             return this.notesMetadataDict.ContainsKey(id);
         }
 
-
+        /// <summary>
+        /// Returns GUID
+        /// </summary>
+        /// <returns></returns>
         private string GetNewID()
         {
             return Guid.NewGuid().ToString();

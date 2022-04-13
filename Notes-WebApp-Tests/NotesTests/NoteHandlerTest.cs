@@ -33,13 +33,13 @@ namespace Notes_WebApp_Tests
         [Test]
         public void TestSuccessfulCreateGet()
         {
-            NoteMetadata note = Create();
+            NoteModel note = Create();
 
             //Get NoteID to passback to GetEntry
             //Should return the same Object
             string noteID = note.NoteID;
 
-            NoteMetadata retrievedNote = instance.GetEntry(noteID);
+            NoteModel retrievedNote = instance.GetEntry(noteID);
             Assert.AreEqual(note, retrievedNote);
         }
 
@@ -47,7 +47,7 @@ namespace Notes_WebApp_Tests
         public void TestSucessCreateDelete()
         {
             bool testPassed;
-            NoteMetadata note = Create();
+            NoteModel note = Create();
             string noteID = note.NoteID;
             int statusCode = instance.DeleteEntry(noteID);
             Assert.AreEqual(StatusCodes.Status200OK, statusCode);
@@ -68,7 +68,7 @@ namespace Notes_WebApp_Tests
         [Test]
         public void TestSuccessCreateEdit()
         {
-            NoteMetadata note = Create();
+            NoteModel note = Create();
             string ogContent = note.NoteContent;
             string ogTitle = note.NoteName;
 
@@ -81,7 +81,7 @@ namespace Notes_WebApp_Tests
             int status = instance.UpdateEntry(note);
             Assert.AreEqual(StatusCodes.Status200OK, status);
 
-            NoteMetadata updatedNote = instance.GetEntry(note.NoteID);
+            NoteModel updatedNote = instance.GetEntry(note.NoteID);
             Assert.AreEqual(newTitle, updatedNote.NoteName);
             Assert.AreEqual(newContent, updatedNote.NoteContent);
         }
@@ -89,14 +89,14 @@ namespace Notes_WebApp_Tests
         [Test]
         public void TestGetNotes()
         {
-            List<NoteMetadata> entiresToTest = new List<NoteMetadata>();
+            List<NoteModel> entiresToTest = new List<NoteModel>();
             for(int i =0; i< 5; i++)
             {
                 entiresToTest.Add(Create());
             }
 
-            List<NoteMetadata> listFromInstance = instance.GetNotes();
-            foreach(NoteMetadata note in entiresToTest)
+            List<NoteModel> listFromInstance = instance.GetNotes();
+            foreach(NoteModel note in entiresToTest)
             {
                 Assert.IsTrue(listFromInstance.Contains(note));
             }
@@ -122,7 +122,7 @@ namespace Notes_WebApp_Tests
         [Test]
         public void TestFailEdit()
         {
-            NoteMetadata note = new NoteMetadata() { NoteID = "ThisDoesNotExist" };
+            NoteModel note = new NoteModel() { NoteID = "ThisDoesNotExist" };
 
             //Will Return a Filed COde 
             int statusCode = instance.UpdateEntry(note);
@@ -137,9 +137,9 @@ namespace Notes_WebApp_Tests
             Assert.AreEqual(StatusCodes.Status404NotFound, statusCode);
         }
 
-        private NoteMetadata Create()
+        private NoteModel Create()
         {
-            NoteMetadata note = new NoteMetadata();
+            NoteModel note = new NoteModel();
             note.NoteName = "TestNOTE";
             note.NoteContent = "TEST CONTENT";
             int statusCode = instance.CreateEntry(note);

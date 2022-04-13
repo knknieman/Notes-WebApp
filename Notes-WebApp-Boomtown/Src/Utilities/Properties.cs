@@ -1,45 +1,49 @@
 ﻿namespace Notes_WebApp_Boomtown.Src.Utilities
 {
-    public sealed class Properties
+    public static class Properties
     {
-        private static Properties instance = null;
-        private Dictionary<string, string> propMap;
+        private static Dictionary<string, string> propMap = null;
 
         public static readonly string NOTES_INDEX_FILE = "NOTES_INDEX_FILE";
         public static readonly string DATA_SOURCE_TYPE = "DATA_SOURCE_TYPE";
         public static readonly List<string> PROP_LIST = new List<string> (){ NOTES_INDEX_FILE, DATA_SOURCE_TYPE };
 
-        private Properties()
-        {
-            propMap = new Dictionary<string, string>();
 
-        }
-
+        /// <summary>
+        /// Returns Internal Property Map
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<string, string> GetPropMap()
         {
-            if(instance == null)
+            //Loading Props into internal map to reduce reads to file system
+            if(propMap == null)
             {
-                instance = new Properties();
                 Dictionary<string, string> properties = GetPropMapFromFile("NotesAppProperties.json");
-                foreach (string prop in PROP_LIST)
-                {
-                    string propValue = properties[prop];
-                    instance.propMap.Add(prop, propValue);
-                }
+                propMap = new Dictionary<string, string>(properties);
             }
-
-            //Need to get props to return
-            return instance.propMap;
+            return propMap;
         }
 
+        /// <summary>
+        /// Returns a Dictionary with Props from a given file 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <returns></returns>
         public static Dictionary<string, string> GetPropMapFromFile(string file)
         {
             return FileHandler.LoadJsonFile<Dictionary<string, string>>(file);
         }
+
+        /// <summary>
+        /// Gets Property from Internal Map
+        /// </summary>
+        /// <param name="propName"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
+        /// <returns></returns>
         public static string GetProp(string propName)
         {
-            //Returns Empty String, probably need to throw if we can't find value 
-            return GetPropMap().GetValueOrDefault(propName, "");
+            return GetPropMap()[propName];
         }
     }
 }
