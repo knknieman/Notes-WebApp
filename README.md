@@ -15,7 +15,6 @@ Data retention is handled through a json file server side.
   - ASP.NET Core 6.0
 - Client
   - React 16
-  - CSS Modules
   - Fetch API for REST requests
 - Testing
   - NUnit for .NET Core testing
