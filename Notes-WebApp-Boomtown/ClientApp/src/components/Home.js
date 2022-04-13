@@ -19,13 +19,12 @@ export class Home extends Component {
 
     state = { selected: null }
     renderNotesTable(noteMetadata) {
-        
         return (
             <ReactTable ref="table"
                 data={noteMetadata}
                 columns={[
                     {
-                        Header: "Test",
+                        Header: "Notes",
                         columns: [
                             {
                                 Header: "ID",
@@ -49,7 +48,6 @@ export class Home extends Component {
                 ]}
                 getTrProps={(state, rowInfo) => {
                     if (rowInfo && rowInfo.row) {
-                        console.log(rowInfo);
                         return {                          
                             onClick: (e) => {
                                 this.props.history.push("/note/" + rowInfo.row.noteID);
@@ -60,7 +58,6 @@ export class Home extends Component {
                     }
                 }
             }
-            
             />
         );
 
@@ -72,7 +69,6 @@ export class Home extends Component {
             ? <p><em>Loading...</em></p>
             : this.renderNotesTable(this.state.noteMetadata);
             
-
         return (
             <div>
                 <div class='row'>

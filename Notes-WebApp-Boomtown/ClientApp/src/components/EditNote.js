@@ -40,7 +40,6 @@ export class EditNote extends Component {
             method: this.apiCall,
             headers: { "content-type": "application/json" },
             body: JSON.stringify(this.state.noteData),
-
         }).then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson === 200) {
@@ -70,10 +69,8 @@ export class EditNote extends Component {
         if (window.confirm("Are you sure you want to delete: " + this.state.noteData.noteName)) {
             fetch('/notes/' + this.state.id, {
                 method: 'DELETE'
-
             }).then((response) => response.json())
                 .then((responseJson) => {
-
                     if (responseJson === 200) {
                         window.location = "/";
                     } else {
@@ -100,6 +97,7 @@ export class EditNote extends Component {
             )
         }
     }
+
     createForm() {
         return (
             <form onSubmit={this.handleSubmit}>
@@ -113,23 +111,16 @@ export class EditNote extends Component {
                 {this.createButtons()}
             </form>
         );
-
     }
 
     render() {
-
         return this.createForm();
     }
 
-
     async getNoteData(id) {
-        
         const response = await fetch('notes/' + id);
-        console.log(response);
         const data = await response.json();
-        console.log(data);
         this.setState({ noteData: data, loading: false });
     }
-
 }
 
