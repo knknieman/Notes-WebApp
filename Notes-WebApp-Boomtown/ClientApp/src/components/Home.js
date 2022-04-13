@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import ReactTable from "react-table-6";
-import "react-table-6/react-table.css";
+import ReactTable from 'react-table-6';
+import 'react-table-6/react-table.css';
 import { Link } from 'react-router-dom'
 
 export class Home extends Component {
@@ -20,28 +20,28 @@ export class Home extends Component {
     state = { selected: null }
     renderNotesTable(noteMetadata) {
         return (
-            <ReactTable ref="table"
+            <ReactTable ref='table'
                 data={noteMetadata}
                 columns={[
                     {
-                        Header: "Notes",
+                        Header: 'Notes',
                         columns: [
                             {
-                                Header: "ID",
-                                accessor: "noteID",
-                                style: { textAlign: "right" }
+                                Header: 'ID',
+                                accessor: 'noteID',
+                                style: { textAlign: 'right' }
                             },
                             {
-                                Header: "Note Title",
-                                accessor: "noteName"
+                                Header: 'Note Title',
+                                accessor: 'noteName'
                             },
                             {
-                                Header: "Creation Date",
-                                accessor: "creationDate"
+                                Header: 'Creation Date',
+                                accessor: 'creationDate'
                             },
                             {
-                                Header: "Last Modified",
-                                accessor: "lastModified"
+                                Header: 'Last Modified',
+                                accessor: 'lastModified'
                             }
                         ]
                     }
@@ -50,7 +50,7 @@ export class Home extends Component {
                     if (rowInfo && rowInfo.row) {
                         return {                          
                             onClick: (e) => {
-                                this.props.history.push("/note/" + rowInfo.row.noteID);
+                                this.props.history.push('/note/' + rowInfo.row.noteID);
                             }
                         }
                     } else {
@@ -72,9 +72,9 @@ export class Home extends Component {
         return (
             <div>
                 <div class='row'>
-                    <div class="col-md-12 bg-light text-right" >
-                        <h5 id="tabelLabel" style={{ "float": 'left' }} >Please Make a Selection to View Note</h5>
-                        <Link className="btn btn-primary m-1" role="button" style={{ "float": 'right' }} to={{ pathname: "/note/create" }}>Create Note</Link>
+                    <div class='col-md-12 bg-light text-right' >
+                        <h5 id='tabelLabel' style={{ 'float': 'left' }} >Please Make a Selection to View Note</h5>
+                        <Link className='btn btn-primary m-1' role='button' style={{ 'float': 'right' }} to={{ pathname: '/note/create' }}>Create Note</Link>
                     </div>
                 </div>
                 {contents}

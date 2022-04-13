@@ -21,7 +21,7 @@ export class EditNote extends Component {
 
     componentDidMount() {
         //Load Passed ID into API, otherwise start with fresh Form
-        if (this.state.mode === "Edit") {
+        if (this.state.mode === 'Edit') {
             this.getNoteData(this.state.id);
         }
     }
@@ -29,25 +29,25 @@ export class EditNote extends Component {
 
     handleSubmit(evt) {
         evt.preventDefault();
-        this.apiCall = "";
-        if (this.state.mode === "Edit") {
-            this.apiCall = "PUT";
-        } else if (this.state.mode === "Create") {
-            this.apiCall = "POST"
+        this.apiCall = '';
+        if (this.state.mode === 'Edit') {
+            this.apiCall = 'PUT';
+        } else if (this.state.mode === 'Create') {
+            this.apiCall = 'POST'
         }
 
         fetch('/notes', {
             method: this.apiCall,
-            headers: { "content-type": "application/json" },
+            headers: { 'content-type': 'application/json' },
             body: JSON.stringify(this.state.noteData),
         }).then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson === 200) {
                     //Redirect home if successful
-                    window.location = "/";
+                    window.location = '/';
                 } else {
                     //Alert User Submit Failed
-                    window.alert("Submit Failed with ReturnCode: " + responseJson);
+                    window.alert('Submit Failed with ReturnCode: ' + responseJson);
                     window.location.reload(false);
                 }
             });
@@ -66,23 +66,23 @@ export class EditNote extends Component {
 
     deleteEntry(evt) {
         evt.preventDefault();
-        if (window.confirm("Are you sure you want to delete: " + this.state.noteData.noteName)) {
+        if (window.confirm('Are you sure you want to delete: ' + this.state.noteData.noteName)) {
             fetch('/notes/' + this.state.id, {
                 method: 'DELETE'
             }).then((response) => response.json())
                 .then((responseJson) => {
                     if (responseJson === 200) {
-                        window.location = "/";
+                        window.location = '/';
                     } else {
-                        window.alert("Submit Failed with ReturnCode: " + responseJson);
-                        window.location = "/";
+                        window.alert('Submit Failed with ReturnCode: ' + responseJson);
+                        window.location = '/';
                     }
                 });
         }
     }
 
     createButtons() {
-        if (this.state.mode === "Edit") {
+        if (this.state.mode === 'Edit') {
             return (
                 <div class='col-xs-3'>
                     <button type='submit' class='btn btn-primary m-1'>Save</button>
@@ -103,10 +103,10 @@ export class EditNote extends Component {
             <form onSubmit={this.handleSubmit}>
                 <div class='form-control'>
                     <label>Note Title</label>
-                    <input type="text" class="form-control" name="noteName" defaultValue={this.state.noteData.noteName} onChange={this.handleChange} />
+                    <input type='text' class='form-control' name='noteName' defaultValue={this.state.noteData.noteName} onChange={this.handleChange} />
 
                     <label>Note Content</label>
-                    <textarea name="noteContent" class="form-control" rows="3" defaultValue={this.state.noteData.noteContent} onChange={this.handleChange} />
+                    <textarea name='noteContent' class='form-control' rows='3' defaultValue={this.state.noteData.noteContent} onChange={this.handleChange} />
                 </div>
                 {this.createButtons()}
             </form>
