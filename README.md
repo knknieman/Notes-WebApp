@@ -1,7 +1,8 @@
 # Overview
 
-This app is a note keeping Application built with ASP.NET Core 6.0 and React for a web client. 
-This app supports the creation, modification, deletion and retrieval of text notes.
+This app is a note keeping application built with ASP.NET Core 6.0 and React for a web client. 
+This app supports the creation, modification, deletion and retrieval of text notes. 
+Data retention is handled through a json file server side.
 
 ## Prerequirements
 
@@ -21,6 +22,6 @@ This app supports the creation, modification, deletion and retrieval of text not
 
 ## How To Run
 
-* Open solution in Visual Studio 2017
+* Open solution in Visual Studio 2022
 * Set Notes-WebApp-Boomtown project as Startup Project and build the project.
 * Run the application.
