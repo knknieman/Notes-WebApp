@@ -4,8 +4,6 @@
     {
         public string? NoteID { set; get; }
 
-        public string? PathOnDisk { set; get; }
-
         public string? CreationDate { set; get; }
 
         public string? LastModified { set; get; }
